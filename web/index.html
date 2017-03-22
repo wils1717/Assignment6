@@ -5,12 +5,47 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>        
     </head>
-    <body>
-        <div>TODO write content</div>
+    <body ng-app="assignment6">
+        <div ng-controller="msgCtrl">
+            Assignment 6 - Unreal War
+            <p>
+                Author:<input ng-model="author" />
+            </p>
+            <p>
+                Message:<input ng-model="message" />    
+            </p>
+            <button ng-click="addMessage()">Post</button>
+            <ul>
+                <li ng-repeat="messages in messageList">
+                    {{messages.id}} - {{messages.author}} - {{messages.messages}} - {{messages.sentTime}} 
+                    <button ng-click="deleteMessage()">Delete Post</button>
+                </li>
+            </ul>
+        </div>        
+        <script src="https://code.angularjs.org/1.5.0/angular.min.js"></script>
+        <script>
+            var assignment6 = angular.module('assignment6', []);
+            assignment6.controller('msgCtrl', function ($scope, $http) {
+                $scope.messageList = [];
+                refreshList();
+
+                function refreshList() {
+                    $http.get('m/messages').success(function (data) {
+                        $scope.messageList = data;
+                    });
+                }
+
+                $scope.addMessage = function () {
+                    $http.post('m/messages', {message: $scope.message}).success(refreshList);
+                };
+                
+                $scope.deleteMessage = function () {
+                     $http.delete('m/messages', {message: $scope.message}).success(refreshList);
+                };
+                
+            });
+        </script>        
     </body>
 </html>
