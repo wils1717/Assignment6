@@ -28,6 +28,7 @@ public class Message {
     private Date senttime;
 
     public Message() {
+        
     }
 
     public Message(JsonObject json) {        

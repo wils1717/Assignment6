@@ -11,15 +11,21 @@ and open the template in the editor.
         <div ng-controller="msgCtrl">
             Assignment 6 - Unreal War
             <p>
-                Author:<input ng-model="author" />
+                ID:<input ng-model="id" />
             </p>
             <p>
-                Message:<input ng-model="message" />    
+                Title:<input ng-model="title" />
+            </p>
+            <p>
+                Contents:<input ng-model="contents" />
+            </p>
+            <p>
+                Author:<input ng-model="author" />    
             </p>
             <button ng-click="addMessage()">Post</button>
             <ul>
                 <li ng-repeat="messages in messageList">
-                    {{messages.id}} - {{messages.author}} - {{messages.messages}} - {{messages.sentTime}} 
+                    {{messages.id}} - {{messages.title}}  - {{messages.contents}} - {{messages.author}} - {{messages.senttime}} 
                     <button ng-click="deleteMessage()">Delete Post</button>
                 </li>
             </ul>
@@ -38,11 +44,11 @@ and open the template in the editor.
                 }
 
                 $scope.addMessage = function () {
-                    $http.post('m/messages', {message: $scope.message}).success(refreshList);
+                    $http.post('m/messages', {"id" : $scope.id, "title" : $scope.title, "contents" : $scope.contents, "author" : $scope.author}).success(refreshList);
                 };
                 
                 $scope.deleteMessage = function () {
-                     $http.delete('m/messages', {message: $scope.message}).success(refreshList);
+                    $http.delete('m/messages', {"id" : $scope.id}).success(refreshList);
                 };
                 
             });
