@@ -11,10 +11,7 @@ and open the template in the editor.
     <body ng-app="assignment6">
         <div ng-controller="msgCtrl">
             <div class ="box">
-            <h1>Assignment 6</h1>
-            <p>
-                ID:<input ng-model="id" />
-            </p>
+            <h1>Assignment 6/7/8</h1>
             <p>
                 Title:<input ng-model="title" />
             </p>
@@ -28,7 +25,8 @@ and open the template in the editor.
             <ul>
                 <li ng-repeat="messages in messageList">
                     {{messages.id}}-{{messages.title}}-{{messages.contents}}-{{messages.author}}-{{messages.senttime}} 
-                    <button ng-click="deleteMessage()">Delete Post</button>
+                    <button ng-click="deleteMessage(messages.id)">Delete Post</button>
+                    <button ng-click="editMessage(messages.id)">Edit Post</button>
                 </li>
             </ul>
         </div>        
@@ -47,13 +45,16 @@ and open the template in the editor.
                 }
 
                 $scope.addMessage = function () {
-                    $http.post('m/messages', {"id" : parseInt($scope.id), "title" : $scope.title, "contents" : $scope.contents, "author" : $scope.author}).success(refreshList);
+                    $http.post('m/messages', {"title" : $scope.title, "contents" : $scope.contents, "author" : $scope.author}).success(refreshList);
                 };
                 
                 $scope.deleteMessage = function (id) {
-                    $http.delete('m/messages', {"id" : parseInt(id)}).success(refreshList);
+                    $http.delete('m/messages/'+  parseInt(id)).success(refreshList);
                 };
                 
+                $scope.editMessage = function (id) {
+                    $http.put('m/messages/'+  parseInt(id),{"title" : $scope.title, "contents" : $scope.contents, "author" : $scope.author}).success(refreshList);
+                };
             });
         </script>        
     </body>
